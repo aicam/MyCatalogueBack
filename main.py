@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from sqlalchemy.orm import Session
 
-from db import crud, models, schemas, database
-from db.database import SessionLocal, engine
+from database import crud, models, schemas, database
+from database.database import SessionLocal, engine
 from \
     router import admin
 models.Base.metadata.create_all(engine)

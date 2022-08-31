@@ -6,7 +6,6 @@ class AdminCreate(AdminBase):
     password: str
 class Admin(AdminBase):
     id: int
-    is_active: bool
 
     class Config:
         orm_mode = True
