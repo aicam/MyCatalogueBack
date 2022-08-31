@@ -1,5 +1,12 @@
-from database.database import SessionLocal
-import database
+from database.admin.funcs import SessionLocal
+from cryptography.fernet import Fernet
+import os
+
+server_key = os.environ['SERVER_KEY']
+fernet = Fernet(server_key.encode())
+
+def generate_key(info: str):
+    return fernet.encrypt(info.encode())
 
 def get_db():
     dbCon = SessionLocal()
