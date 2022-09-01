@@ -8,6 +8,8 @@ fernet = Fernet(server_key.encode())
 def generate_key(info: str):
     return fernet.encrypt(info.encode())
 
+def decrypt_key(enc: str):
+    return fernet.decrypt(enc.encode())
 def get_db():
     dbCon = SessionLocal()
     try:

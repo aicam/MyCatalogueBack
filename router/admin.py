@@ -9,7 +9,6 @@ from dependencies import get_db, generate_key
 
 router = APIRouter(
     prefix="/admin"
-
 )
 
 @router.post("/users/", response_model=schemas.Admin)
