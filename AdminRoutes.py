@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from database.database import SessionLocal
-from database import crud, schemas
+from database.admin.funcs import SessionLocal
+from database.admin import crud, schemas
 
 
 def get_db():

@@ -1,5 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request, Response
 from fastapi import Depends, HTTPException
+from fastapi.routing import APIRoute
+import time
+from typing import Callable
 from sqlalchemy.orm import Session
 from typing import List
 import sys
@@ -7,10 +10,27 @@ sys.path.append('../parentdirectory')
 from database.admin import schemas, crud
 from dependencies import get_db, generate_key
 
-router = APIRouter(
-    prefix="/admin"
-)
 
+class AdminMiddleWare(APIRoute):
+    def get_route_handler(self) -> Callable:
+        original_route_handler = super().get_route_handler()
+
+        async def custom_route_handler(request: Request) -> Response:
+            before = time.time()
+            response: Response = await original_route_handler(request)
+            duration = time.time() - before
+            response.headers["X-Response-Time"] = str(duration)
+            print(f"route duration: {duration}")
+            print(f"route response: {response}")
+            print(f"route response headers: {response.headers}")
+            return response
+
+        return custom_route_handler
+
+router = APIRouter(
+    prefix="/admin",
+    route_class=AdminMiddleWare
+)
 @router.post("/users/", response_model=schemas.Admin)
 def create_user(user: schemas.AdminCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
