@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DECIMAL
 from sqlalchemy.orm import relationship
 
 from .funcs import Base
@@ -12,17 +12,11 @@ class AdminUser(Base):
     hashed_password = Column(String(50))
     name = Column(String(20))
 
-class University(Base):
-    __tablename__ = "university"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(30), unique=True, index=True)
-
-class UniversityLabel(Base):
-    __tablename__ = "university_scores"
-
-    id = Column(Integer, primary_key=True, index=True)
-    university_id = Column(Integer)
-    label_name = Column(String(50))
-    label_min = Column(String(50))
-    label_mid = Column(String(50))
-    label_max = Column(String(50))
+class UnivInfo(Base):
+    __tablename__ = "univ_info"
+    uni_id = Column(Integer, primary_key=True, index=True)
+    uni_name = Column(String(100))
+    min_sat = Column(Integer)
+    min_act = Column(Integer)
+    capacity = Column(Integer)
+    accept_rate = Column(DECIMAL(3,1))
