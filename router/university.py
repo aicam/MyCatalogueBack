@@ -24,3 +24,11 @@ def login(user: schemas.UnivCredentials, db: Session = Depends(get_db)):
     if db_user.hashed_password != user.password + "notreallyhashed":
         raise HTTPException(status_code=403, detail="Wrong username or password")
     return {'key': generate_key(user.email)}
+
+@router.patch("/edit/{uni_id}")
+def edit_univ_info(uni_id: int, univ: schemas.UnivEdit, db: Session = Depends(get_db)):
+    db_univ = crud.get_univ_by_id(db, uni_id)
+    if not db_univ:
+        raise HTTPException(status_code=403, detail="Access denied")
+    db_univ = crud.update_univ_info(db, univ, uni_id)
+    return db_univ
