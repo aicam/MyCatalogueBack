@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List, Optional
 from enum import Enum
 
 class RoleEnum(str, Enum):
@@ -34,3 +35,10 @@ class Univ(UnivBase):
     uni_id: int
     class Config:
         orm_mode = True
+ 
+class UnivEdit(BaseModel):
+    uni_name: Optional[str] = None
+    min_sat: Optional[int] = None
+    min_act: Optional[int] = None
+    capacity: Optional[int] = None
+    accept_rate: Optional[float] = None
