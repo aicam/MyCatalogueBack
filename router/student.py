@@ -23,6 +23,10 @@ def read_users(user: schemas.StudentCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email = user.email)
     return db_user
 
+@router.get("/users/all")
+def get_all_users(db: Session = Depends(get_db)):
+    return crud.get_users(db)
+
 @router.post("/login/")
 def login(user: schemas.StudentCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)

@@ -45,7 +45,7 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 
 @router.get("/univ/", response_model=List[schemas.Univ])
 def read_univ(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    all_univ = crud.get_univ(db, skip=skip, limit=limit)
+    all_univ = crud.get_univs(db, skip=skip, limit=limit)
     return all_univ
 
 @router.post("/login/")
