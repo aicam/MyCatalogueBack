@@ -33,3 +33,11 @@ def add_univ(univ: schemas.UnivBase, db: Session = Depends(get_db)):
 @router.get("/list")
 def get_univ(skip: Union[int] = 0, limit: Union[int] = 100, db: Session = Depends(get_db)):
     return crud.get_univs(db, skip, limit)
+
+@router.patch("/edit/{uni_id}")
+def edit_univ_info(uni_id: int, univ: schemas.UnivEdit, db: Session = Depends(get_db)):
+    db_univ = crud.get_univ_by_id(db, uni_id)
+    if not db_univ:
+        raise HTTPException(status_code=403, detail="Access denied")
+    db_univ = crud.update_univ_info(db, univ, uni_id)
+    return db_univ

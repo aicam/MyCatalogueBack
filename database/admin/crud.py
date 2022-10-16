@@ -27,6 +27,9 @@ def create_user(db: Session, user: schemas.AdminCredentials):
 def get_univs(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.UnivInfo).offset(skip).limit(limit).all()
 
+def get_univ_by_id(db: Session, uni_id: int):
+    return db.query(models.UnivInfo).filter(models.UnivInfo.uni_id == uni_id).first()
+
 def get_univ(db: Session, name: str):
     return db.query(models.SystemUser).filter(models.UnivInfo.uni_name == name).first()
 def create_univ(db: Session, univ: schemas.UnivBase):
@@ -39,3 +42,14 @@ def create_univ(db: Session, univ: schemas.UnivBase):
     db.commit()
     db.refresh(db_univ)
     return db_univ
+
+
+def update_univ_info(db: Session, univ: schemas.UnivEdit, uni_id: int):
+    db_uni = db.query(models.UnivInfo).filter(models.UnivInfo.uni_id == uni_id).first()
+    univ_data = univ.dict(exclude_unset=True)
+    for key, value in univ_data.items():
+        setattr(db_uni, key, value)
+    db.add(db_uni)
+    db.commit()
+    db.refresh(db_uni)
+    return db_uni
