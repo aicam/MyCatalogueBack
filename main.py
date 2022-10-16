@@ -19,6 +19,8 @@ app.add_middleware(
 app.include_router(student.router)
 app.include_router(university.router)
 app.include_router(admin.router)
+app.include_router(student.router)
+app.include_router(university.router)
 
 @app.get("/")
 async def root():
