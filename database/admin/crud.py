@@ -53,3 +53,27 @@ def update_univ_info(db: Session, univ: schemas.UnivEdit, uni_id: int):
     db.commit()
     db.refresh(db_uni)
     return db_uni
+
+# new functions
+def get_profile(db: Session, user_id:int):
+    return db.query(models.StudentInfo).filter(models.StudentInfo.user_id == user_id).first()
+
+def get_student_apps(db: Session, user_id: int):
+    return db.query(models.StudentApplications).filter(models.StudentApplications.user_id == user_id)
+
+def update_student_info(db: Session, student: schemas.StudentEdit, user_id: int):
+    db_student = get_profile(db, user_id)
+    student_data = student.dict(exclude_unset=True)
+    for key,value in student_data.items():
+        setattr(db_student, key, value)
+    db.add(db_student)
+    db.commit()
+    db.refresh(db_student)
+    return db_student
+
+def new_application(db: Session, app: schemas.AppBase):
+    db_new_app = models.StudentApplications(uni_name = app.uni_name, app_date = app.app_date, student_id = app.student_id)
+    db.add(db_new_app)
+    db.commit()
+    db.refresh(db_new_app)
+    return db_new_app
