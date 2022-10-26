@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 from enum import Enum
+import datetime
 
 class RoleEnum(str, Enum):
     student = 'student'
@@ -42,3 +43,32 @@ class UnivEdit(BaseModel):
     min_act: Optional[int] = None
     capacity: Optional[int] = None
     accept_rate: Optional[float] = None
+ 
+class StudentBase(BaseModel):
+    f_name: str
+    l_name: str
+    sat_score: int
+    act_score: int
+    gpa: float
+
+class Student(StudentBase):
+    user_id: int
+    class Config:
+        orm_mode = True
+
+class StudentEdit(BaseModel):
+    f_name: Optional[str] = None
+    l_name: Optional[str] = None
+    sat_score: Optional[int] = None
+    act_score: Optional[int] = None
+    gpa: Optional[float] = None
+
+class AppBase(BaseModel):
+    uni_name: str
+    app_date: datetime.date
+    student_id: int
+
+class Application(AppBase):
+    app_id: int
+    class Config:
+        orm_mode = True
