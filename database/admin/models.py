@@ -20,3 +20,21 @@ class UnivInfo(Base):
     min_act = Column(Integer)
     capacity = Column(Integer)
     accept_rate = Column(DECIMAL(3,1))
+
+ class StudentInfo(Base):
+    __tablename__ = "student_info"
+    id = Column(Integer, primary_key=True, index = True)
+    f_name = Column(String(30))
+    l_name = Column(String(30))
+    sat_score = Column(Integer)
+    act_score = Column(Integer)
+    gpa = Column(DECIMAL(2,1))
+    user_id = Column(Integer, ForeignKey("system_users.id"))
+
+# table to store university application for student ids
+class StudentApplications(Base):
+    __tablename__ = "student_apps"
+    app_id = Column(Integer, primary_key=True, index = True)
+    uni_name = Column(String(100))
+    app_date = Column(Date)
+    student_id = Column(Integer, ForeignKey("student_info.user_id"))
