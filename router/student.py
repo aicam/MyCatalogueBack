@@ -37,3 +37,24 @@ def login(user: schemas.StudentCredentials, db: Session = Depends(get_db)):
     if db_user.role != 'student' or db_user.role != user.role:
         raise HTTPException(status_code=403, detail="Wrong username or password")
     return {'key': generate_key(user.email)}
+
+# new definition
+@router.get("/profile/{student_id}", response_model=schemas.Student)
+def view_profile(student_id: int, db: Session = Depends(get_db)):
+    db_profile = crud.get_profile(db, student_id)
+    if not db_profile:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_profile
+
+@router.patch("/profile/{student_id}")
+def update_profile(student_id: int, student: schemas.StudentEdit ,db: Session = Depends(get_db)):
+    db_profile = crud.get_profile(db, student_id)
+    if not db_profile:
+        raise HTTPException(status_code=403, detail="Access denied")
+    db_profile = crud.update_student_info(db, student, student_id)
+    return db_profile
+
+@router.post("/app/", response_model = schemas.Application)
+def new_apply(app: schemas.AppBase, db: Session = Depends(get_db)):
+    db_uni_app = crud.new_application(db, app)
+    return db_uni_app
