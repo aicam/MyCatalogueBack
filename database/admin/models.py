@@ -38,3 +38,12 @@ class StudentApplications(Base):
     uni_name = Column(String(100))
     app_date = Column(Date)
     student_id = Column(Integer, ForeignKey("student_info.user_id"))
+
+
+# table to store additional test_scores for student ids
+class TestScores(Base):
+    __tablename__ = "test_scores"
+    score_id = Column(Integer, primary_key=True, index = True)
+    test_name = Column(String(30))
+    t_score = Column(Integer)
+    student_id = Column(Integer, ForeignKey("student_info.user_id"))
