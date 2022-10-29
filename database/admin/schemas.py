@@ -72,3 +72,17 @@ class Application(AppBase):
     app_id: int
     class Config:
         orm_mode = True
+
+class TestBase(BaseModel):
+    test_name: str
+    t_score: int
+    student_id: int
+
+class TestEdit(BaseModel):
+    test_name: Optional[str] = None
+    t_score: Optional[int] = None
+
+class TestScore(TestBase):
+    score_id: int
+    class Config:
+        orm_mode = True
