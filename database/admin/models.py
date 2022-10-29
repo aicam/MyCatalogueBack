@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DECIMAL
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DECIMAL, Date
 from sqlalchemy.orm import relationship
 
 from .funcs import Base
