@@ -58,3 +58,27 @@ def update_profile(student_id: int, student: schemas.StudentEdit ,db: Session = 
 def new_apply(app: schemas.AppBase, db: Session = Depends(get_db)):
     db_uni_app = crud.new_application(db, app)
     return db_uni_app
+
+
+@router.get("/app/", response_model = List[schemas.Application])
+def view_apps(student: schemas.Student, db:Session = Depends(get_db)):
+    db_app_list = crud.get_student_apps(db, student.user_id)
+    return db_app_list
+
+@router.post("/score/", response_model = schemas.TestScore)
+def new_score(score: schemas.TestBase, db: Session = Depends(get_db)):
+    db_test = crud.new_test_score(db, score)
+    return db_test
+
+@router.get("/score/", response_model = List[schemas.TestScore])
+def view_scores(student: schemas.Student, db:Session = Depends(get_db)):
+    db_score_list = crud.get_student_scores(db, student.user_id)
+    return db_score_list
+
+@router.patch("/score/{score_id}")
+def update_score(score_id: int, new_score: schemas.TestEdit, db: Session = Depends(get_db)):
+    db_test_record = crud.get_student_score(db, score_id)
+    if not db_test_record:
+        raise HTTPException(status_code=403, detail="Access Denied")
+    db_test_record = crud.update_score_info(db, new_score, score_id)
+    return db_test_record
