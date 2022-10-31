@@ -21,7 +21,7 @@ class UnivInfo(Base):
     capacity = Column(Integer)
     accept_rate = Column(DECIMAL(3,1))
 
- class StudentInfo(Base):
+class StudentInfo(Base):
     __tablename__ = "student_info"
     id = Column(Integer, primary_key=True, index = True)
     f_name = Column(String(30))
