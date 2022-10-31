@@ -6,6 +6,8 @@ def get_data(path):
     return pd.read_csv(path).dropna()
 
 #
-def get_pred_func(path):
+def get_model(path):
     m = OLSModel(get_data(path))
+    m.train()
+    return m
 

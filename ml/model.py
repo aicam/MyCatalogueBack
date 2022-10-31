@@ -14,4 +14,5 @@ class OLSModel(sm.OLS):
         self.coeffs = self.fit().params
 
     def predict_satis(self, x):
+        ## TODO: pass the real value of admission rate instead of 0
         return self.coeffs[0] * fitFunctAdmin(x['SAT_AVG'], x['ACTCMMID'], 0) + self.coeffs['const']
