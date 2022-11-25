@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 
-from . import models
-from . import schemas
+from database import models, schemas
 
 
 def get_user(db: Session, user_id: int):
@@ -102,3 +101,14 @@ def update_score_info(db: Session, score: schemas.TestEdit, score_id: int):
     db.commit()
     db.refresh(db_score)
     return db_score
+
+# delete functions
+def delete_university(db: Session, id: int):
+    db_uni = db.query(models.UnivInfo).filter(models.UnivInfo.uni_id == id).first()
+    db.delete(db_uni)
+    db.commit()
+
+def delete_user(db: Session, id: int):
+    db_user = db.query(models.SystemUser).filter(models.SystemUser.id == id).first()
+    db.delete(db_user)
+    db.commit()

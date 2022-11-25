@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from typing import List
 import sys
 sys.path.append('../parentdirectory')
-from database.admin import schemas, crud
+from database import crud, schemas
 from dependencies import get_db, generate_key
 
 
@@ -58,3 +58,8 @@ def login(user: schemas.AdminCredentials, db: Session = Depends(get_db)):
     if db_user.role != user.role:
         raise HTTPException(status_code=403, detail="Wrong username or password")
     return {'key': generate_key(user.email)}
+
+@router.get("/delete/user/{id}")
+def delete_user(id: int, db: Session = Depends(get_db)):
+    crud.delete_user(db, id)
+    return {"status": "success"}

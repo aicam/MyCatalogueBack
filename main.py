@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
-from database.admin import models
-from database.admin.funcs import engine
+from database import models
+from database.funcs import engine
 from router import admin, student, university
 models.Base.metadata.create_all(engine)
 

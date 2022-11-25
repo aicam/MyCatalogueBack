@@ -1,5 +1,5 @@
 from ml.main import get_model
-
+from ml.utils import fitFuncAdmin, fitFuncSatis
 path = "./ml/dataset/UseableDataDraft1.csv"
 
 print("Model is loading...")

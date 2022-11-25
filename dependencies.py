@@ -1,4 +1,4 @@
-from database.admin.funcs import SessionLocal
+from database.funcs import SessionLocal
 from cryptography.fernet import Fernet
 import os
 

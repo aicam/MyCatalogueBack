@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 import sys
 sys.path.append('../parentdirectory')
-from database.admin import schemas, crud
+from database import crud, schemas
 from dependencies import get_db, generate_key
 
 router = APIRouter(
@@ -47,7 +47,7 @@ def view_profile(student_id: int, db: Session = Depends(get_db)):
     return db_profile
 
 @router.patch("/profile/{student_id}")
-def update_profile(student_id: int, student: schemas.StudentEdit ,db: Session = Depends(get_db)):
+def update_profile(student_id: int, student: schemas.StudentEdit, db: Session = Depends(get_db)):
     db_profile = crud.get_profile(db, student_id)
     if not db_profile:
         raise HTTPException(status_code=403, detail="Access denied")
@@ -61,8 +61,8 @@ def new_apply(app: schemas.AppBase, db: Session = Depends(get_db)):
 
 
 @router.get("/app/", response_model = List[schemas.Application])
-def view_apps(student: schemas.Student, db:Session = Depends(get_db)):
-    db_app_list = crud.get_student_apps(db, student.user_id)
+def view_apps(student_id: int, db:Session = Depends(get_db)):
+    db_app_list = crud.get_student_apps(db, student_id)
     return db_app_list
 
 @router.post("/score/", response_model = schemas.TestScore)

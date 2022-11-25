@@ -2,10 +2,9 @@ from fastapi import APIRouter
 from typing import Union
 from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
 import sys
 sys.path.append('../parentdirectory')
-from database.admin import schemas, crud
+from database import crud, schemas
 from dependencies import get_db, generate_key
 
 router = APIRouter(
@@ -41,3 +40,8 @@ def edit_univ_info(uni_id: int, univ: schemas.UnivEdit, db: Session = Depends(ge
         raise HTTPException(status_code=403, detail="Access denied")
     db_univ = crud.update_univ_info(db, univ, uni_id)
     return db_univ
+
+@router.get("/delete/{uni_id}")
+def delete_univ(uni_id: int, db: Session = Depends(get_db)):
+    crud.delete_university(db, uni_id)
+    return {"status": "success"}
