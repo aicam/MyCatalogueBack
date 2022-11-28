@@ -1,14 +1,12 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import matplotlib.path as p
-import matplotlib.patches as patches
 import statsmodels.api as sm
 import math
 import scipy.spatial
 
 
-class RegressionModel:
+class RegressionModel(object):
 
     def __init__(self, data):
         self.data = data
@@ -184,5 +182,3 @@ class RegressionModel:
                                                       square)
 
         return closeUniGroup
-
-

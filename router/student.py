@@ -3,9 +3,10 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 import sys
-sys.path.append('../parentdirectory')
+sys.path.append('../')
 from database import crud, schemas
-from dependencies import get_db, generate_key
+from dependencies import get_db, generate_key, get_ml_model
+from ml.model import RegressionModel
 
 router = APIRouter(
     prefix="/student"
@@ -82,3 +83,7 @@ def update_score(score_id: int, new_score: schemas.TestEdit, db: Session = Depen
         raise HTTPException(status_code=403, detail="Access Denied")
     db_test_record = crud.update_score_info(db, new_score, score_id)
     return db_test_record
+
+@router.get("/recom")
+def get_recommended_unis(m: RegressionModel = Depends(get_ml_model)):
+    return m.get_full_list()

@@ -1,7 +1,8 @@
 from database.funcs import SessionLocal
 from cryptography.fernet import Fernet
+from ml.main import get_model
 import os
-
+dataset_path = "ml/dataset/UseableDataDraft1.csv"
 server_key = os.environ['SERVER_KEY']
 fernet = Fernet(server_key.encode())
 
@@ -16,3 +17,7 @@ def get_db():
         yield dbCon
     finally:
         dbCon.close()
+
+def get_ml_model():
+    m = get_model()
+    return m
