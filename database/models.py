@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DECIMAL, Date
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DECIMAL, Date, BINARY
 from sqlalchemy.orm import relationship
 
 from .funcs import Base
@@ -9,7 +9,7 @@ class SystemUser(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(30), unique=True, index=True)
-    hashed_password = Column(String(50))
+    hashed_password = Column(BINARY(60))
     role = Column(String(10))
 
 class UnivInfo(Base):
