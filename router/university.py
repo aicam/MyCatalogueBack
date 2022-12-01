@@ -4,7 +4,7 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.orm import Session
 import sys
 sys.path.append('../parentdirectory')
-from database import crud, schemas
+from database import crud, schemas, scrypt_test
 from dependencies import get_db, generate_key
 
 router = APIRouter(
@@ -21,7 +21,7 @@ def login(user: schemas.UnivCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if not db_user:
         raise HTTPException(status_code=403, detail="Wrong username or password")
-    if db_user.hashed_password != user.password + "notreallyhashed":
+    if scrypt_test.compareHashed(user.password, db_user.hashed_password) == False:
         raise HTTPException(status_code=403, detail="Wrong username or password")
     return {'key': generate_key(user.email)}
 
