@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 import sys
 sys.path.append('../')
-from database import crud, schemas
+from database import crud, schemas, scrypt_test
 from dependencies import get_db, generate_key, get_ml_model
 from ml.model import RegressionModel
 
@@ -33,7 +33,7 @@ def login(user: schemas.StudentCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if not db_user:
         raise HTTPException(status_code=403, detail="Wrong username or password")
-    if db_user.hashed_password != user.password + "notreallyhashed":
+    if scrypt_test.compareHashed(user.password, db_user.hashed_password) == False:
         raise HTTPException(status_code=403, detail="Wrong username or password")
     if db_user.role != 'student' or db_user.role != user.role:
         raise HTTPException(status_code=403, detail="Wrong username or password")
