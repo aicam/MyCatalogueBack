@@ -82,6 +82,9 @@ def update_score(score_id: int, new_score: schemas.TestEdit, db: Session = Depen
     db_test_record = crud.update_score_info(db, new_score, score_id)
     return db_test_record
 
-@router.get("/recom")
-def get_recommended_unis(m: RegressionModel = Depends(get_ml_model)):
-    return m.get_full_list()
+@router.get("/recom/{student_id}")
+def get_recommended_unis(student_id: int, m: RegressionModel = Depends(get_ml_model), db: Session = Depends(get_db)):
+    info = crud.get_profile(db, student_id)
+    # sample ['4', 'HISP', 'CIP42', '3.8', 1090, 24, 'M', 1, 0.1]
+    s = ['4', 'HISP', 'CIP42', str(info.gpa), info.sat_score, info.act_score, 'M', 1, 0.8]
+    return m.get_full_list(s)

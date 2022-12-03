@@ -66,6 +66,18 @@ def get_profile(db: Session, user_id:int):
 def get_student_apps(db: Session, student_id: int):
     return db.query(models.StudentApplications).filter(models.StudentApplications.student_id == student_id).all()
 
+def get_uni_apps(db: Session, uni_name: str):
+    all_apps = db.query(models.StudentApplications).filter(models.StudentApplications.uni_name == uni_name).all()
+    apps_conv = []
+    for app in all_apps:
+        student_info = db.query(models.StudentInfo).filter(models.StudentInfo.user_id == app.student_id).first()
+        apps_conv.append({
+            "uni_name": uni_name,
+            "date_applied": app.app_date,
+            "student": student_info,
+            "full_name": student_info.f_name + ' ' + student_info.l_name
+        })
+    return apps_conv
 def get_student_scores(db: Session, student_id: int):
     return db.query(models.TestScores).filter(models.TestScores.student_id == student_id).all()
 

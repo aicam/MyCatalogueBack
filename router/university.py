@@ -45,3 +45,7 @@ def edit_univ_info(uni_id: int, univ: schemas.UnivEdit, db: Session = Depends(ge
 def delete_univ(uni_id: int, db: Session = Depends(get_db)):
     crud.delete_university(db, uni_id)
     return {"status": "success"}
+
+@router.post("/app")
+def get_university_applications(uni: schemas.UniAppReq, db: Session = Depends(get_db)):
+    return crud.get_uni_apps(db, uni.uni_name)

@@ -87,3 +87,9 @@ class TestScore(TestBase):
     score_id: int
     class Config:
         orm_mode = True
+
+class UniAppReq(BaseModel):
+    uni_name: str
+
+    class Config:
+        orm_mode = True
