@@ -55,7 +55,13 @@ def update_univ_info(db: Session, univ: schemas.UnivEdit, uni_id: int):
 
 # new functions
 def get_profile(db: Session, user_id:int):
-    return db.query(models.StudentInfo).filter(models.StudentInfo.user_id == user_id).first()
+    found = db.query(models.StudentInfo).filter(models.StudentInfo.user_id == user_id).first()
+    if found:
+        return found
+    sample = models.StudentInfo(user_id=user_id)
+    db.add(sample)
+    db.commit()
+    return sample
 
 def get_student_apps(db: Session, student_id: int):
     return db.query(models.StudentApplications).filter(models.StudentApplications.student_id == student_id).all()
@@ -69,12 +75,12 @@ def get_student_score(db: Session, score_id: int):
 # new update methods
 def update_student_info(db: Session, student: schemas.StudentEdit, user_id: int):
     db_student = get_profile(db, user_id)
-    student_data = student.dict(exclude_unset=True)
-    for key,value in student_data.items():
-        setattr(db_student, key, value)
-    db.add(db_student)
+    db_student.gpa = student.gpa
+    db_student.f_name = student.f_name
+    db_student.l_name = student.l_name
+    db_student.act_score = student.act_score
+    db_student.sat_score = student.sat_score
     db.commit()
-    db.refresh(db_student)
     return db_student
 
 

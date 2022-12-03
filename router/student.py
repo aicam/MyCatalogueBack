@@ -47,11 +47,9 @@ def view_profile(student_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_profile
 
-@router.patch("/profile/{student_id}")
+@router.post("/profile/{student_id}")
 def update_profile(student_id: int, student: schemas.StudentEdit, db: Session = Depends(get_db)):
-    db_profile = crud.get_profile(db, student_id)
-    if not db_profile:
-        raise HTTPException(status_code=403, detail="Access denied")
+    print(student)
     db_profile = crud.update_student_info(db, student, student_id)
     return db_profile
 

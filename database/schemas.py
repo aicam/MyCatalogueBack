@@ -62,7 +62,7 @@ class StudentEdit(BaseModel):
     l_name: Optional[str] = None
     sat_score: Optional[int] = None
     act_score: Optional[int] = None
-    gpa: Optional[float] = None
+    gpa: Optional[str] = None
 
 class AppBase(BaseModel):
     uni_name: str
