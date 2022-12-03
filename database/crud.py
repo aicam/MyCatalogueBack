@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from database import models, schemas, scrypt_test
+from database import models, schemas, scrypt_funcs
 
 
 def get_user(db: Session, user_id: int):
@@ -15,10 +15,8 @@ def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.SystemUser).offset(skip).limit(limit).all()
 
 def create_user(db: Session, user: schemas.AdminCredentials):
-    salt = scrypt_test.genSalt()
-    hashed = scrypt_test.getHashed(user.password, salt)
-    true_hashed = salt + hashed
-    db_user = models.SystemUser(email=user.email, hashed_password=true_hashed, role=user.role)
+    hashed = scrypt_funcs.getHashed(user.password)
+    db_user = models.SystemUser(email=user.email, hashed_password=hashed, role=user.role, university_name=user.university_name)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

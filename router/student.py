@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from typing import List
 import sys
 sys.path.append('../')
-from database import crud, schemas, scrypt_test
+from database import crud, schemas, scrypt_funcs
 from dependencies import get_db, generate_key, get_ml_model
 from ml.model import RegressionModel
 
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 @router.post("/users/", response_model=schemas.User)
-def create_user(user: schemas.StudentCredentials, db: Session = Depends(get_db)):
+def create_user(user: schemas.AdminCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -30,14 +30,14 @@ def get_all_users(db: Session = Depends(get_db)):
 
 @router.post("/login/")
 def login(user: schemas.StudentCredentials, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
+    db_user = crud.get_user_by_email(db, email=user.username)
     if not db_user:
         raise HTTPException(status_code=403, detail="Wrong username or password")
-    if scrypt_test.compareHashed(user.password, db_user.hashed_password) == False:
+    if scrypt_funcs.compareHashed(user.password, db_user.hashed_password) == False:
         raise HTTPException(status_code=403, detail="Wrong username or password")
-    if db_user.role != 'student' or db_user.role != user.role:
-        raise HTTPException(status_code=403, detail="Wrong username or password")
-    return {'key': generate_key(user.email)}
+    # if db_user.role != 'student' or db_user.role != user.role:
+    #     raise HTTPException(status_code=403, detail="Wrong username or password")
+    return {'key': generate_key(user.username), 'user': {"id": db_user.id, "email": user.username, "university": db_user.university_name, "role": db_user.role}}
 
 # new definition
 @router.get("/profile/{student_id}", response_model=schemas.Student)

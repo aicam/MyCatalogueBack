@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from typing import List
 import sys
 sys.path.append('../parentdirectory')
-from database import crud, schemas, scrypt_test
+from database import crud, schemas, scrypt_funcs
 from dependencies import get_db, generate_key
 
 
@@ -53,7 +53,7 @@ def login(user: schemas.AdminCredentials, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
     if not db_user:
         raise HTTPException(status_code=403, detail="Wrong username or password")
-    if scrypt_test.compareHashed(user.password, db_user.hashed_password) == False:
+    if scrypt_funcs.compareHashed(user.password, db_user.hashed_password) == False:
         raise HTTPException(status_code=403, detail="Wrong username or password")
     if db_user.role != user.role:
         raise HTTPException(status_code=403, detail="Wrong username or password")

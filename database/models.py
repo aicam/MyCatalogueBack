@@ -9,8 +9,9 @@ class SystemUser(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(30), unique=True, index=True)
-    hashed_password = Column(BINARY(60))
+    hashed_password = Column(String(1000))
     role = Column(String(10))
+    university_name = Column(String(200))
 
 class UnivInfo(Base):
     __tablename__ = "univ_info"

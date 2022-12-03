@@ -12,13 +12,14 @@ class RoleEnum(str, Enum):
 class UserBase(BaseModel):
     email: str
 class AdminCredentials(UserBase):
-    password: bytes
+    password: str
     role: RoleEnum = RoleEnum.admin
-class StudentCredentials(UserBase):
-    password: bytes
-    role: RoleEnum = RoleEnum.student
+    university_name: str
+class StudentCredentials(BaseModel):
+    username: str
+    password: str
 class UnivCredentials(UserBase):
-    password: bytes
+    password: str
     role: RoleEnum = RoleEnum.univ
 class User(UserBase):
     id: int
