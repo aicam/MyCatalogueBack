@@ -63,6 +63,9 @@ class StudentEdit(BaseModel):
     sat_score: Optional[int] = None
     act_score: Optional[int] = None
     gpa: Optional[str] = None
+    ethnicity: Optional[str] = 'HISP'
+    sex: Optional[str] = 'M'
+
 
 class AppBase(BaseModel):
     uni_name: str

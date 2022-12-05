@@ -75,7 +75,9 @@ def get_uni_apps(db: Session, uni_name: str):
             "uni_name": uni_name,
             "date_applied": app.app_date,
             "student": student_info,
-            "full_name": student_info.f_name + ' ' + student_info.l_name
+            "full_name": student_info.f_name + ' ' + student_info.l_name,
+            "app_id": app.app_id,
+            "approved": app.approved
         })
     return apps_conv
 def get_student_scores(db: Session, student_id: int):
@@ -92,6 +94,8 @@ def update_student_info(db: Session, student: schemas.StudentEdit, user_id: int)
     db_student.l_name = student.l_name
     db_student.act_score = student.act_score
     db_student.sat_score = student.sat_score
+    db_student.ethnicity = student.ethnicity
+    db_student.sex = student.sex
     db.commit()
     return db_student
 
@@ -129,4 +133,9 @@ def delete_university(db: Session, id: int):
 def delete_user(db: Session, id: int):
     db_user = db.query(models.SystemUser).filter(models.SystemUser.id == id).first()
     db.delete(db_user)
+    db.commit()
+
+def approve_app(db: Session, id: int):
+    db_app = db.query(models.StudentApplications).filter(models.StudentApplications.app_id == id).first()
+    db_app.approved = True
     db.commit()

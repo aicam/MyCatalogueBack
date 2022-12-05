@@ -30,6 +30,8 @@ class StudentInfo(Base):
     sat_score = Column(Integer)
     act_score = Column(Integer)
     gpa = Column(DECIMAL(2,1))
+    ethnicity = Column(String(30))
+    sex = Column(String(2))
     user_id = Column(Integer, ForeignKey("system_users.id"))
 
 # table to store university application for student ids
@@ -39,6 +41,7 @@ class StudentApplications(Base):
     uni_name = Column(String(100))
     app_date = Column(Date)
     student_id = Column(Integer, ForeignKey("student_info.user_id"))
+    approved = Column(Boolean, default=False)
 
 
 # table to store additional test_scores for student ids
